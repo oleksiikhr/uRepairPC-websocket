@@ -1,0 +1,21 @@
+{
+  "name": "@urepairpc/websocket",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uRepairPC/websocket.git"
+  },
+  "author": "Alexey Khrushch, alexeykhr@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uRepairPC/websocket/issues"
+  },
+  "homepage": "https://github.com/uRepairPC/websocket#readme",
+  "dependencies": {
+    "socket.io": "^2.1.1"
+  }
+}
