@@ -1,4 +1,9 @@
-const awaitRequest = require('./src/helper/await-request')
+'use strict'
+
+/*
+ * Import
+ */
+const awaitRequest = require('./helper/await-request')
 const server = require('http').createServer()
 const config = require('./config/index')
 const io = require('socket.io')(server)
