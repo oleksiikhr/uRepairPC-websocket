@@ -12,10 +12,16 @@ const Redis = require('ioredis')
 const redis = new Redis()
 
 /*
+ * Variables
+ */
+const sockets = {}
+
+/*
  * Authorization
  */
 require('socketio-auth')(io, {
   async authenticate(socket, data, callback) {
+    /** @var type - pc, user, etc */
     const { type, id, token } = data
 
     // Data is empty
@@ -32,19 +38,20 @@ require('socketio-auth')(io, {
         uri: config.URL_AUTH + type,
         form: { id, token }
       })
-    }
-    catch (e) {
+    } catch (e) {
       return callback(new Error(e))
     }
 
     // Check answer from server
-    // { success - is true }
+    // return object - { success - is true }
     if (res) {
       try {
         const dataParsed = JSON.parse(res)
 
         if (dataParsed.success) {
-          socket.join(type) // Join to {pc | user | etc} room
+          socket.join(type) // Join to room
+          redis.publish('last_seen.now', JSON.stringify({ type, id }))
+          sockets[socket.id] = { id, type }
           return callback(null, true)
         }
 
@@ -66,10 +73,16 @@ require('socketio-auth')(io, {
 //   io.emit(pattern + ':' + message.event, message.data)
 // })
 
-io.on('connection', (client) => {
-  console.log('Connection')
-  client.on('disconnect', () => {
+io.on('connection', (socket) => {
+  console.log('Connection', socket.id)
+
+  // Set last_seen to user/pc.
+  socket.on('disconnect', () => {
     console.log('Disconnect')
+
+    const { id, type } = sockets[socket.id]
+    redis.publish('last_seen.now', JSON.stringify({ type, id }))
+    delete sockets[socket.id]
   })
 })
 
