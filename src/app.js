@@ -80,7 +80,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Disconnect')
 
-    const { id, type } = sockets[socket.id]
+	  if (!sockets[socket.id]) {
+		  return
+	  }
+
+	  const { id, type } = sockets[socket.id]
     redis.publish('last_seen.now', JSON.stringify({ type, id }))
     delete sockets[socket.id]
   })
