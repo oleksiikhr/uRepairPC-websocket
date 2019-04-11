@@ -1,9 +1,9 @@
 {
   "name": "@urepairpc/websocket",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
@@ -16,9 +16,8 @@
   },
   "homepage": "https://github.com/uRepairPC/websocket#readme",
   "dependencies": {
-    "ioredis": "^4.2.0",
+    "ioredis": "^4.9.0",
     "request": "^2.88.0",
-    "socket.io": "^2.1.1",
-    "socketio-auth": "^0.1.1"
+    "socket.io": "^2.2.0"
   }
 }
