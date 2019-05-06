@@ -1,7 +1,8 @@
 'use strict'
 
-/*
- * Require
+/* | -----------------------------------------------------------------------------------
+ * | - Require / import -
+ * | -----------------------------------------------------------------------------------
  */
 const awaitRequest = require('./helper/await-request')
 const server = require('http').createServer()
@@ -9,11 +10,16 @@ const io = require('socket.io')(server)
 const Redis = require('ioredis')
 const env = require('./env')
 
-/*
- * Variables
+/* | -----------------------------------------------------------------------------------
+ * | - Variables -
+ * | -----------------------------------------------------------------------------------
  */
 const redis = new Redis
 
+/* | -----------------------------------------------------------------------------------
+ * | - Listen all server.* event from Redis -
+ * | -----------------------------------------------------------------------------------
+ */
 redis.psubscribe('server.*')
 redis.on('pmessage', (channel, pattern, message) => {
 
@@ -43,8 +49,9 @@ redis.on('pmessage', (channel, pattern, message) => {
 	sendData.emit(message.emit, message.data)
 })
 
-/**
- * Events
+/* | -----------------------------------------------------------------------------------
+ * | - Socket.io events -
+ * | -----------------------------------------------------------------------------------
  */
 io.on('connection', (socket) => {
 
@@ -78,7 +85,10 @@ io.on('connection', (socket) => {
 	})
 })
 
-// Run the server
+/* | -----------------------------------------------------------------------------------
+ * | - Run the server -
+ * | -----------------------------------------------------------------------------------
+ */
 server.listen(env.port, () => {
 	console.log(`Listening on *:${env.port}`)
 })
