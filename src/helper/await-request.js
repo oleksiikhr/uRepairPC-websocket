@@ -11,7 +11,7 @@ module.exports = async (value) =>
       if (error) {
         reject(error)
       } else {
-        resolve(data)
+        resolve(response)
       }
     })
   })

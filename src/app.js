@@ -7,60 +7,71 @@ const awaitRequest = require('./helper/await-request')
 const server = require('http').createServer()
 const io = require('socket.io')(server)
 const Redis = require('ioredis')
-const path = require('path')
 const env = require('./env')
 
 /*
  * Variables
  */
 const redis = new Redis
-const sockets = {}
 
 redis.psubscribe('server.*')
 redis.on('pmessage', (channel, pattern, message) => {
-  console.log(channel, pattern, message)
 
+	// Get data from laravel and validate
 	try {
-		message = JSON.parse(message)
+		message = JSON.parse(message).data
+
+		if (!message.emit || !message.permissions || !message.data) {
+			throw 'Structure invalidated'
+		}
 	} catch (e) {
+		console.warn(e)
 		return
 	}
 
-	switch (message.event) {
-	case `App${path.sep}Events${path.sep}Users${path.sep}Edit`:
-		sockets[message.data.from_id].socket
-			.to('users')
-			.emit(`users-${message.data.id}`, {
-				action: 'update',
-				detail: message.data.detail,
-				from_id: message.data.from_id
-			})
-		break
+	// Prepare for output data
+	const sendData = io
+
+	if (Array.isArray(message.permissions)) {
+		message.permissions.forEach((permission) => {
+			sendData.in(permission)
+		})
+	} else {
+		sendData.in(message.permissions)
 	}
+
+	sendData.emit(message.emit, message.data)
 })
 
+/**
+ * Events
+ */
 io.on('connection', (socket) => {
-	console.log('Connection', socket.id)
-
-	// FIXME fill on user Auth (permissions)
-	socket.join('users')
-
-	// TODO Auth
-	socket.on('auth', () => {
-		console.log('Auth')
-
-		// Check user from server
-		// FIXME 1 - example userId
-		sockets[1] = { socket }
+	// Get token and validate on the server (make request)
+	socket.on('auth', async (token) => {
+		const res = await awaitRequest(env.laravelServer + '/api/auth/profile?token=' + token)
+		if (res.statusCode === 200) {
+			try {
+				// Join to rooms by user permissions
+				const body = JSON.parse(res.body)
+				socket.join(body.permissions)
+			} catch (e) {
+				console.warn(e)
+			}
+		}
 	})
 
-	socket.on('disconnect', () => {
-		console.log('Disconnect', socket.id)
-		// FIXME
-		delete sockets[1]
+	// Exit from all rooms
+	socket.on('logout', () => {
+		Object.keys(socket.rooms).forEach((room) => {
+			if (socket.id !== room) {
+				socket.leave(room)
+			}
+		})
 	})
 })
 
+// Run the server
 server.listen(env.port, () => {
 	console.log(`Listening on *:${env.port}`)
 })
