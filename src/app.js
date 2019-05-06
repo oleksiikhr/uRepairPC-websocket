@@ -21,7 +21,7 @@ redis.on('pmessage', (channel, pattern, message) => {
 	try {
 		message = JSON.parse(message).data
 
-		if (!message.emit || !message.permissions || !message.data) {
+		if (!message.emit || !message.permissions) {
 			throw 'Structure invalidated'
 		}
 	} catch (e) {
