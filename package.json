@@ -1,0 +1,24 @@
+{
+  "name": "@urepairpc/websocket",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "pm2 start src/app.js --watch",
+    "prod": "pm2 start src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uRepairPC/websocket.git"
+  },
+  "author": "Alexey Khrushch, alexeykhr@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uRepairPC/websocket/issues"
+  },
+  "homepage": "https://github.com/uRepairPC/websocket#readme",
+  "dependencies": {
+    "ioredis": "^4.9.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0"
+  }
+}
