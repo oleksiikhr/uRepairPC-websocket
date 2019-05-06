@@ -47,8 +47,19 @@ redis.on('pmessage', (channel, pattern, message) => {
  * Events
  */
 io.on('connection', (socket) => {
+
+	const leaveFromAllRooms = () => {
+		Object.keys(socket.rooms).forEach((room) => {
+			if (socket.id !== room) {
+				socket.leave(room)
+			}
+		})
+	}
+
 	// Get token and validate on the server (make request)
 	socket.on('auth', async (token) => {
+		leaveFromAllRooms()
+
 		const res = await awaitRequest(env.laravelServer + '/api/auth/profile?token=' + token)
 		if (res.statusCode === 200) {
 			try {
@@ -63,11 +74,7 @@ io.on('connection', (socket) => {
 
 	// Exit from all rooms
 	socket.on('logout', () => {
-		Object.keys(socket.rooms).forEach((room) => {
-			if (socket.id !== room) {
-				socket.leave(room)
-			}
-		})
+		leaveFromAllRooms()
 	})
 })
 
