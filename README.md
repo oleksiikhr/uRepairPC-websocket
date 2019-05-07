@@ -19,7 +19,7 @@
 </p>
 
 ## Introducing
-For realtime updates. We listen to events from the server using Redis and send to users.
+For realtime updates. Listen to events from the server using Redis and send to users.
 
 ## Docs
 See [here](https://urepairpc.github.io/docs/)
@@ -30,19 +30,25 @@ See [here](https://urepairpc.github.io/docs/)
 
 ## Quick Start
 ```bash
+# Copy .env.example to .env and config this
+
 # Install dependencies
 $ npm i
 # or yarn
 
-# Copy .env.example to .env and config this
-
-# Run on production
+# Run on production - build project and run from dist folder
+$ npm run build
 $ npm run prod
-# or on development
+
+# Run on development
 $ npm run dev
+
+# Run eslint
+$ npm run lint
 
 # Run test
 $ npm run test
+$ npm run test:coverage
 ```
 
 ## Ecosystem
