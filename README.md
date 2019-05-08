@@ -33,8 +33,7 @@ See [here](https://urepairpc.github.io/docs/)
 # Copy .env.example to .env and config this
 
 # Install dependencies
-$ npm i
-# or yarn
+$ npm ci
 
 # Run on production - build project and run from dist folder
 $ npm run build
