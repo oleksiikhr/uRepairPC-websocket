@@ -4,9 +4,9 @@
  */
 import http from 'http';
 import Redis from 'ioredis';
-import request from 'request-promise-native';
 import socketIO from 'socket.io';
 import * as env from './env';
+import allTypes, * as type from './helper/types';
 
 /* | -----------------------------------------------------------------------------------
  * | - Variables -
@@ -22,31 +22,77 @@ const io = socketIO(server);
  */
 redis.psubscribe('server.*');
 redis.on('pmessage', (channel, pattern, message) => {
-
-  // Get data from laravel and validate
+  // Get data from laravel and validate to right structure
   try {
     message = JSON.parse(message).data;
 
-    if (!message.emit || !message.permissions || !message.data) {
-      throw new Error('Structure invalidated');
+    if (!message.event) {
+      throw new Error('Event is empty');
+    }
+
+    if (typeof message.data === 'undefined') {
+      throw new Error('Data is undefined');
+    }
+
+    if (typeof message.rooms === 'undefined') {
+      throw new Error('Rooms is empty');
+    }
+
+    if (!allTypes.includes(message.type)) {
+      throw new Error('Type is invalid');
+    }
+
+    if (!message.socketId) {
+      throw new Error('SocketId is empty');
     }
   } catch (e) {
-    console.warn(e);
+    console.warn('Redis input: ' + e);
     return;
   }
 
-  // Prepare for output data
-  const sendData = io;
-
-  if (Array.isArray(message.permissions)) {
-    message.permissions.forEach((permission: string) => {
-      sendData.in(permission);
-    });
-  } else {
-    sendData.in(message.permissions);
+  const socket = io.sockets.connected[message.socketId];
+  if (typeof socket === 'undefined') {
+    return;
   }
 
-  sendData.emit(message.emit, message.data);
+  // Get rooms
+  let rooms: Array<string> = [];
+  if (Array.isArray(message.rooms)) {
+    rooms = message.rooms;
+  } else if (message.rooms) {
+    rooms = [message.rooms];
+  }
+
+  switch (message.type) {
+  case type.JOIN:
+    rooms.forEach(room => socket.join(room));
+    break;
+  case type.SYNC:
+    Object.keys(socket.rooms).forEach((room) => {
+      if (socket.id !== room) {
+        const findRoomIndex = rooms.indexOf(room);
+        if (~findRoomIndex) {
+          rooms.splice(findRoomIndex, 1);
+        } else {
+          socket.leave(room);
+        }
+      }
+    });
+    rooms.forEach(room => socket.join(room));
+    break;
+  case type.CREATE:
+  case type.UPDATE:
+  case type.DELETE:
+    rooms.forEach(room => socket.to(room));
+    socket.broadcast.emit(message.event, {
+      params: message.params,
+      type: message.type,
+      data: message.data
+    });
+    break;
+  default:
+    console.warn('Broadcast: message.type unknown');
+  }
 });
 
 /* | -----------------------------------------------------------------------------------
@@ -55,35 +101,21 @@ redis.on('pmessage', (channel, pattern, message) => {
  */
 io.on('connection', (socket) => {
 
-  const leaveFromAllRooms = () => {
+  socket.on('leave', (rooms) => {
+    if (Array.isArray(rooms)) {
+      rooms.forEach(room => socket.leave(room));
+    } else {
+      socket.leave(rooms);
+    }
+  });
+
+  // Leave from all rooms
+  socket.on('logout', () => {
     Object.keys(socket.rooms).forEach((room) => {
       if (socket.id !== room) {
         socket.leave(room);
       }
     });
-  };
-
-  // Get token and validate on the server (make request)
-  socket.on('auth', async (token) => {
-    leaveFromAllRooms();
-
-    try {
-      const res = await request(env.laravelServer + '/api/auth/profile?token=' + token, {
-        resolveWithFullResponse: true,
-      });
-
-      // Join to rooms by user permissions
-      const body = JSON.parse(res.body);
-      socket.join(body.permissions);
-
-    } catch (e) {
-      //
-    }
-  });
-
-  // Exit from all rooms
-  socket.on('logout', () => {
-    leaveFromAllRooms();
   });
 });
 
