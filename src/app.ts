@@ -56,7 +56,7 @@ redis.on('pmessage', (channel, pattern, message) => {
   }
 
   // Get rooms
-  let rooms: Array<string> = [];
+  let rooms: string[] = [];
   if (Array.isArray(message.rooms)) {
     rooms = message.rooms;
   } else if (message.rooms) {
@@ -65,7 +65,7 @@ redis.on('pmessage', (channel, pattern, message) => {
 
   switch (message.type) {
   case type.JOIN:
-    rooms.forEach(room => socket.join(room));
+    rooms.forEach((room) => socket.join(room));
     break;
   case type.SYNC:
     Object.keys(socket.rooms).forEach((room) => {
@@ -78,16 +78,16 @@ redis.on('pmessage', (channel, pattern, message) => {
         }
       }
     });
-    rooms.forEach(room => socket.join(room));
+    rooms.forEach((room) => socket.join(room));
     break;
   case type.CREATE:
   case type.UPDATE:
   case type.DELETE:
-    rooms.forEach(room => socket.to(room));
+    rooms.forEach((room) => socket.to(room));
     socket.broadcast.emit(message.event, {
+      data: message.data,
       params: message.params,
       type: message.type,
-      data: message.data
     });
     break;
   default:
@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
 
   socket.on('leave', (rooms) => {
     if (Array.isArray(rooms)) {
-      rooms.forEach(room => socket.leave(room));
+      rooms.forEach((room) => socket.leave(room));
     } else {
       socket.leave(rooms);
     }

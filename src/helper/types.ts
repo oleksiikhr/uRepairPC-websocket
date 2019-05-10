@@ -18,5 +18,5 @@ export default [
   SYNC,
   CREATE,
   UPDATE,
-  DELETE
+  DELETE,
 ];
