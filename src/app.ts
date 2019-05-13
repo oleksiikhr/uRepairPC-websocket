@@ -6,7 +6,7 @@ import http from 'http';
 import Redis from 'ioredis';
 import socketIO from 'socket.io';
 import * as env from './env';
-import allTypes, * as type from './helper/types';
+import allTypes, * as type from './enum/types';
 
 /* | -----------------------------------------------------------------------------------
  * | - Variables -
