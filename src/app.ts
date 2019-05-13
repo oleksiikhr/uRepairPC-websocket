@@ -22,7 +22,9 @@ const io = socketIO(server);
  */
 redis.psubscribe('server.*');
 redis.on('pmessage', (channel, pattern, message) => {
-  // Get data from laravel and validate to right structure
+  /*
+   * Get data from laravel and validate to right structure
+   */
   try {
     message = JSON.parse(message).data;
 
@@ -46,7 +48,7 @@ redis.on('pmessage', (channel, pattern, message) => {
       throw new Error('SocketId is empty');
     }
   } catch (e) {
-    console.warn('Redis input: ' + e);
+    console.warn(e);
     return;
   }
 
@@ -68,6 +70,10 @@ redis.on('pmessage', (channel, pattern, message) => {
     rooms.forEach((room) => socket.join(room));
     break;
   case type.SYNC:
+    /*
+     * Leave the existing rooms that are not found in the array
+     * and join the remaining rooms.
+     */
     Object.keys(socket.rooms).forEach((room) => {
       if (socket.id !== room) {
         const findRoomIndex = rooms.indexOf(room);
@@ -83,6 +89,9 @@ redis.on('pmessage', (channel, pattern, message) => {
   case type.CREATE:
   case type.UPDATE:
   case type.DELETE:
+    /*
+     * Broadcast event to rooms or all
+     */
     rooms.forEach((room) => socket.to(room));
     socket.broadcast.emit(message.event, {
       data: message.data,
@@ -100,7 +109,6 @@ redis.on('pmessage', (channel, pattern, message) => {
  * | -----------------------------------------------------------------------------------
  */
 io.on('connection', (socket) => {
-
   socket.on('leave', (rooms) => {
     if (Array.isArray(rooms)) {
       rooms.forEach((room) => socket.leave(room));

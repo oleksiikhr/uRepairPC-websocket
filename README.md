@@ -53,8 +53,8 @@ $ npm run test:coverage
 ## Ecosystem
 | Project | Status | Description |
 |---------|--------|-------------|
-| [urepairpc-server]    | ![urepairpc-server-status] | Backend on Laravel |
-| [urepairpc-web]       | ![urepairpc-web-status] | Frontend on Vue |
+| [urepairpc-server]    | ![urepairpc-server-status]    | Backend on Laravel |
+| [urepairpc-web]       | ![urepairpc-web-status]       | Frontend on Vue |
 | [urepairpc-websocket] | ![urepairpc-websocket-status] | WebSocket Backend |
 
 [urepairpc-server]: https://github.com/uRepairPC/server
