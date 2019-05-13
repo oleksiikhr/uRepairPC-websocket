@@ -131,6 +131,6 @@ io.on('connection', (socket) => {
  * | - Run the server -
  * | -----------------------------------------------------------------------------------
  */
-server.listen(env.port, () => {
+server.listen(env.port, env.hostName, () => {
   console.log(`Listening on *:${env.port}`);
 });
