@@ -5,8 +5,8 @@
 import http from 'http';
 import Redis from 'ioredis';
 import socketIO from 'socket.io';
-import * as env from './env';
 import allTypes, * as type from './enum/types';
+import * as env from './env';
 
 /* | -----------------------------------------------------------------------------------
  * | - Variables -
