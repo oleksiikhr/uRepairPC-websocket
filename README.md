@@ -10,12 +10,11 @@
 </p>
 
 <p align="center">
-    <a href="https://circleci.com/gh/uRepairPC/websocket"><img src="https://circleci.com/gh/uRepairPC/websocket.svg?style=shield" alt="Build Status"></a>
-    <a href="https://github.com/uRepairPC/websocket" rel="nofollow"><img alt="Version" src="https://img.shields.io/github/package-json/v/urepairpc/websocket.svg"></a>
-    <a href="https://codecov.io/gh/uRepairPC/websocket"><img src="https://codecov.io/gh/uRepairPC/websocket/branch/master/graph/badge.svg" alt="Test Coverage"></a>
-    <a href="https://github.com/uRepairPC/websocket" rel="nofollow"><img alt="License" src="https://img.shields.io/github/license/urepairpc/websocket.svg"></a>
+    <a href="https://circleci.com/gh/uRepairPC/websocket" rel="nofollow"><img src="https://circleci.com/gh/uRepairPC/websocket.svg?style=shield" alt="Build Status"></a>
+    <a href="https://github.com/uRepairPC/websocket" rel="nofollow"><img src="https://img.shields.io/github/package-json/v/urepairpc/websocket.svg" alt="Version"></a>
     <a href="https://david-dm.org/uRepairPC/websocket" rel="nofollow"><img src="https://david-dm.org/uRepairPC/websocket.svg" alt="Dependency Status"></a>
     <a href="https://david-dm.org/uRepairPC/websocket?type=dev" rel="nofollow"><img src="https://david-dm.org/uRepairPC/websocket/dev-status.svg" alt="devDependency Status"></a>
+    <a href="https://github.com/uRepairPC/websocket" rel="nofollow"><img src="https://img.shields.io/github/license/urepairpc/websocket.svg" alt="License"></a>
 </p>
 
 ## Introducing
@@ -33,8 +32,7 @@ See [here](https://urepairpc.github.io/docs/)
 # Copy .env.example to .env and config this
 
 # Install dependencies
-$ npm i
-# or yarn
+$ npm ci
 
 # Run on production - build project and run from dist folder
 $ npm run build
@@ -54,8 +52,8 @@ $ npm run test:coverage
 ## Ecosystem
 | Project | Status | Description |
 |---------|--------|-------------|
-| [urepairpc-server]    | ![urepairpc-server-status] | Backend on Laravel |
-| [urepairpc-web]       | ![urepairpc-web-status] | Frontend on Vue |
+| [urepairpc-server]    | ![urepairpc-server-status]    | Backend on Laravel |
+| [urepairpc-web]       | ![urepairpc-web-status]       | Frontend on Vue |
 | [urepairpc-websocket] | ![urepairpc-websocket-status] | WebSocket Backend |
 
 [urepairpc-server]: https://github.com/uRepairPC/server
