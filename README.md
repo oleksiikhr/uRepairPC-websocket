@@ -57,7 +57,7 @@ $ npm run test:coverage
 | [urepairpc-websocket] | ![urepairpc-websocket-status] | WebSocket Backend |
 
 [urepairpc-server]: https://github.com/uRepairPC/server
-[urepairpc-server-status]: https://img.shields.io/github/tag/urepairpc/server.svg
+[urepairpc-server-status]: https://img.shields.io/github/package-json/v/urepairpc/server.svg
 
 [urepairpc-web]: https://github.com/uRepairPC/web
 [urepairpc-web-status]: https://img.shields.io/github/package-json/v/urepairpc/web.svg
