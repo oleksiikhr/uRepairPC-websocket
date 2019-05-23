@@ -24,7 +24,7 @@
   "dependencies": {
     "@types/ioredis": "^4.0.10",
     "@types/socket.io": "^2.1.2",
-    "ioredis": "^4.9.0",
+    "ioredis": "^4.9.5",
     "request": "^2.88.0",
     "socket.io": "^2.2.0"
   },
