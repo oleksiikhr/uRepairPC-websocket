@@ -31,6 +31,10 @@ jobs:
 
       - run: npm i
 
+      - run:
+          command: npm run dev
+          background: true
+
       - run: npm run test
 
       - run: npm run build
