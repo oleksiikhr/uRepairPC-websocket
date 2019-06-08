@@ -31,3 +31,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 * new logic/structure ([4b4ac44](https://github.com/uRepairPC/websocket/commit/4b4ac44))
 * rewrite on typescript. Add test, lint. Update docs ([302e494](https://github.com/uRepairPC/websocket/commit/302e494))
+
