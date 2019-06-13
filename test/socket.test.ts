@@ -56,7 +56,8 @@ describe('Check connections and events', () => {
   describe('Listener events from the Server', () => {
     test('Socket1 joins the room, and Socket2 makes an event', async (done) => {
       socket1.on('test', (data: any) => {
-        expect({data: {name: 'Test'}, type: types.CREATE}).toStrictEqual(data);
+        expect(data).toHaveProperty('data.name');
+        expect(data).toHaveProperty('type');
         done();
       });
 
