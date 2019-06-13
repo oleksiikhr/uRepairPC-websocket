@@ -75,6 +75,7 @@ export default (message: any, sockets: socketIO.Namespace) => {
        */
       rooms.forEach((room) => socket.to(room));
       socket.broadcast.emit(message.event, {
+        app: 'server',
         data: message.data,
         params: message.params,
         type: message.type,
