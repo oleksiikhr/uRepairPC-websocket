@@ -1,5 +1,5 @@
-import allTypes, * as type from '../enum/types';
 import socketIO from 'socket.io';
+import allTypes, * as type from '../enum/types';
 
 export default (message: any, sockets: socketIO.Namespace) => {
 
@@ -84,4 +84,4 @@ export default (message: any, sockets: socketIO.Namespace) => {
     default:
       console.warn('Broadcast: message.type unknown');
   }
-}
+};

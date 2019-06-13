@@ -6,8 +6,8 @@ import http from 'http';
 import Redis from 'ioredis';
 import socketIO from 'socket.io';
 import * as env from './env';
-import autodeploySubscribeHandler from './psubscribe/autodeploy'
-import serverSubscribeHandler from './psubscribe/server'
+import autodeploySubscribeHandler from './psubscribe/autodeploy';
+import serverSubscribeHandler from './psubscribe/server';
 
 /* | -----------------------------------------------------------------------------------
  * | - Variables -

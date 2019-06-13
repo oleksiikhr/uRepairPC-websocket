@@ -23,6 +23,6 @@ export default (message: any, io: socketIO.Server) => {
   // Send event
   io.emit(message.event, {
     app: 'autodeploy',
-    data: message.data
-  })
-}
+    data: message.data,
+  });
+};

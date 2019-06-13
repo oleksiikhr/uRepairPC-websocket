@@ -3,6 +3,8 @@ import Redis from 'ioredis';
 import * as types from '../src/enum/types';
 import { port } from '../src/env';
 
+const WAIT_TIMEOUT = 500;
+
 describe('Check connections and events', () => {
   let socket1: SocketIOClient.Socket;
   let socket2: SocketIOClient.Socket;
@@ -76,7 +78,7 @@ describe('Check connections and events', () => {
       // Socket2 create something
       await redisEvent('test', types.CREATE, socket2.id, {name: 'Test'}, ['test-1', 'test2']);
 
-      setTimeout(done, 300);
+      setTimeout(done, WAIT_TIMEOUT);
     });
 
     test('Socket1 joins the room then leave, and Socket2 makes an event', async (done) => {
@@ -93,9 +95,9 @@ describe('Check connections and events', () => {
       // Socket2 create something
       setTimeout(async () => {
         await redisEvent('test', types.CREATE, socket2.id, {name: 'Test'}, ['test-1', 'test-2']);
-      }, 300);
+      }, WAIT_TIMEOUT);
 
-      setTimeout(done, 600);
+      setTimeout(done, WAIT_TIMEOUT * 2);
     });
   });
 });
