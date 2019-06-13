@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/uRepairPC/websocket/compare/v1.1.2...v1.2.0) (2019-06-13)
+
+
+### Features
+
+* support events from autodeploy ([5191ac5](https://github.com/uRepairPC/websocket/commit/5191ac5))
+
+
+
 ### [1.1.2](https://github.com/uRepairPC/websocket/compare/v1.1.1...v1.1.2) (2019-06-04)
 
 
