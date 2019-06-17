@@ -2,19 +2,31 @@
  * | - import -
  * | -----------------------------------------------------------------------------------
  */
+import fs from 'fs';
 import http from 'http';
+import https from 'https';
 import Redis from 'ioredis';
 import socketIO from 'socket.io';
 import * as env from './env';
-import autodeploySubscribeHandler from './psubscribe/autodeploy'
-import serverSubscribeHandler from './psubscribe/server'
+import autodeploySubscribeHandler from './psubscribe/autodeploy';
+import serverSubscribeHandler from './psubscribe/server';
 
 /* | -----------------------------------------------------------------------------------
- * | - Variables -
+ * | - Initialization -
  * | -----------------------------------------------------------------------------------
  */
+let server: http.Server|https.Server;
 const redis = new Redis();
-const server = http.createServer();
+
+if (env.ssl) {
+  server = https.createServer({
+    cert: fs.readFileSync(env.sslCrt),
+    key: fs.readFileSync(env.sslKey),
+  });
+} else {
+  server = http.createServer();
+}
+
 const io = socketIO(server);
 
 /* | -----------------------------------------------------------------------------------
@@ -64,5 +76,5 @@ io.on('connection', (socket) => {
  * | -----------------------------------------------------------------------------------
  */
 server.listen(env.port, env.hostName, () => {
-  console.log(`Listening on *:${env.port}`);
+  console.log(`Listening on ${env.hostName || '*'}:${env.port}`);
 });
