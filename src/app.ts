@@ -64,5 +64,5 @@ io.on('connection', (socket) => {
  * | -----------------------------------------------------------------------------------
  */
 server.listen(env.port, env.hostName, () => {
-  console.log(`Listening on *:${env.port}`);
+  console.log(`Listening on ${env.hostName || '*'}:${env.port}`);
 });
