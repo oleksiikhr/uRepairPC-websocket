@@ -19,7 +19,7 @@
 </p>
 
 ## Introducing
-For realtime updates. Listen to events from the server using Redis and send to users.
+Created to receive updates in real time. Almost complete control is using Redis.
 
 ## Docs
 See [here](https://docs.urepairpc.com/)
