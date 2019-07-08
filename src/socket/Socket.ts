@@ -29,7 +29,7 @@ export default class Socket {
     return socket;
   }
 
-  private connectionEvent () {
+  private connectionEvent (): void {
     this.io.on('connection', (socket) => {
       socket.on('leave', (rooms) => {
         if (Array.isArray(rooms)) {

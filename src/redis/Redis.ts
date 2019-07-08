@@ -16,24 +16,35 @@ export default class Redis {
     this.socket = socket;
   }
 
+  /**
+   * @return {void}
+   */
   public init (): void {
     this.psubscribe();
     this.pmessage();
   }
 
+  /**
+   * @return {void}
+   * @see https://redis.io/topics/pubsub
+   */
   private psubscribe (): void {
     Object.keys(Redis.handlers).forEach((subscribeName) => {
       this.redis.psubscribe(subscribeName);
     });
   }
 
+  /**
+   * @return {void}
+   * @see https://redis.io/topics/pubsub
+   */
   private pmessage (): void {
     this.redis.on('pmessage', (channel, pattern, message) => {
-      const handler = Redis.handlers[channel];
+      const Handler = Redis.handlers[channel];
 
-      if (handler) {
+      if (Handler) {
         try {
-          new handler(this.socket, message).execute();
+          new Handler(this.socket, message).execute();
         } catch (e) {
           console.warn(e);
         }
@@ -43,7 +54,6 @@ export default class Redis {
     });
   }
 
-  // FIXME { [x: string]: IHandler } ?
   static get handlers () {
     return {
       [`${APP_SERVER}.*`]: ServerHandler,
