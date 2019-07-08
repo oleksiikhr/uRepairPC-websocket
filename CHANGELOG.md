@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/uRepairPC/websocket/compare/v1.3.0...v2.0.0) (2019-07-08)
+
+
+### chore
+
+* rewrite all code, change logic for events, lint on .circleci ([d22cb9e](https://github.com/uRepairPC/websocket/commit/d22cb9e))
+
+
+### Features
+
+* support events from autodeploy ([093fa40](https://github.com/uRepairPC/websocket/commit/093fa40))
+
+
+### BREAKING CHANGES
+
+* rewrite all code, change logic for events, lint on .circleci
+
+
+
 ## [1.3.0](https://github.com/uRepairPC/websocket/compare/v1.2.0...v1.3.0) (2019-06-17)
 
 

@@ -19,14 +19,10 @@
 </p>
 
 ## Introducing
-For realtime updates. Listen to events from the server using Redis and send to users.
+Created to receive updates in real time. Almost complete control is using Redis.
 
 ## Docs
-See [here](https://urepairpc.github.io/docs/)
-
-## Require
-- [uRepairPC - Server](https://github.com/uRepairPC/server)
-- [Redis](https://redis.io/)
+See [here](https://docs.urepairpc.com/)
 
 ## Quick Start
 ```bash

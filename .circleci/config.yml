@@ -36,7 +36,10 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # Check build
+      # Run lint
+      - run: npm run lint
+
+      # Run build
       - run: npm run build
 
       # Start server on prod for tests

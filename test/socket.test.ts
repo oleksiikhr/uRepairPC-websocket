@@ -1,20 +1,22 @@
 import io from 'socket.io-client';
 import Redis from 'ioredis';
-import * as types from '../src/enum/types';
+import * as types from '../src/enum/serverTypes';
 import { port } from '../src/env';
+import { SERVER as APP_SERVER } from '../src/enum/apps';
 
 const WAIT_TIMEOUT = 500;
 
 describe('Check connections and events', () => {
-  let socket1: SocketIOClient.Socket;
-  let socket2: SocketIOClient.Socket;
+  let sockets: SocketIOClient.Socket[];
+  let socket1: SocketIOClient.Socket; // first user
+  let socket2: SocketIOClient.Socket; // second user
   const redis = new Redis();
 
   /*
    * Server (laravel broadcast event to the socket server
    */
   const redisEvent = (event: string, type: string, socketId: string, data?: any, rooms?: Array<string> | string): Promise<number> => {
-    return redis.publish('server.test', JSON.stringify({
+    return redis.publish(`${APP_SERVER}.test`, JSON.stringify({
       data: {
         event, data, rooms, type, socketId
       }
@@ -27,26 +29,23 @@ describe('Check connections and events', () => {
   beforeEach((done) => {
     socket1 = io.connect('http://localhost:' + port);
     socket2 = io.connect('http://localhost:' + port);
+    sockets = [socket1, socket2];
 
-    socket1.on('connect', () => {
-      if (socket1.connected && socket2.connected) {
-        done();
-      }
-    });
-    socket2.on('connect', () => {
-      if (socket1.connected && socket2.connected) {
-        done();
-      }
+    sockets.forEach((socket) => {
+      socket.on('connect', () => {
+        if (sockets.every(s => s.connected)) {
+          done();
+        }
+      })
     });
   });
 
   afterEach((done) => {
-    if (socket1.connected) {
-      socket1.disconnect();
-    }
-    if (socket2.connected) {
-      socket2.disconnect();
-    }
+    sockets.forEach((socket) => {
+      if (socket.connected) {
+        socket.disconnect();
+      }
+    });
     done();
   });
 
@@ -57,7 +56,7 @@ describe('Check connections and events', () => {
 
   describe('Listener events from the Server', () => {
     test('Socket1 joins the room, and Socket2 makes an event', async (done) => {
-      socket1.on('test', (data: any) => {
+      socket1.on(`${APP_SERVER}.test`, (data: any) => {
         expect(data).toHaveProperty('data.name');
         expect(data).toHaveProperty('type');
         done();
@@ -71,7 +70,7 @@ describe('Check connections and events', () => {
     });
 
     test('Socket1 doesn\'t joins the room, and Socket2 makes an event', async (done) => {
-      socket1.on('test', () => {
+      socket1.on(`${APP_SERVER}.test`, () => {
         done.fail('Socket1 received event');
       });
 
@@ -82,7 +81,7 @@ describe('Check connections and events', () => {
     });
 
     test('Socket1 joins the room then leave, and Socket2 makes an event', async (done) => {
-      socket1.on('test', () => {
+      socket1.on(`${APP_SERVER}.test`, () => {
         done.fail('Socket1 received event');
       });
 
