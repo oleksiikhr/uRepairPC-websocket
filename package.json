@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/uRepairPC/websocket#readme",
   "dependencies": {
-    "@types/ioredis": "^4.0.12",
+    "@types/ioredis": "^4.0.13",
     "@types/socket.io": "^2.1.2",
     "ioredis": "^4.11.1",
     "request": "^2.88.0",
