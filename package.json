@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "main": "dist/app",
   "scripts": {
+    "start": "node app",
     "dev": "nodemon --watch",
     "prod": "node dist/app",
     "build": "tsc",
