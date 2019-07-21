@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "main": "dist/app",
   "scripts": {
-    "start": "node app",
+    "start": "pm2 start app.js",
     "dev": "nodemon --watch",
     "prod": "node dist/app",
     "build": "tsc",
@@ -26,6 +26,7 @@
   "dependencies": {
     "dotenv": "^8.0.0",
     "ioredis": "^4.11.2",
+    "pm2": "^3.5.1",
     "request": "^2.88.0",
     "socket.io": "^2.2.0"
   },
