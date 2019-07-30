@@ -35,6 +35,24 @@ export default class ServerHandler implements IHandler {
         this.syncSocketRooms(socket, rooms);
         break;
       case type.CREATE:
+        if (this.message.join) {
+          // Get all clients from input rooms
+          const sockets = this.socket.io.sockets
+          rooms.forEach(room => sockets.in(room))
+
+          // Every client now listen the new room
+          sockets.clients((err: any, clients: string[]) => {
+            if (!err) {
+              clients.forEach(client => {
+                try {
+                  this.socket.getConnectedSocketById(client).join(this.message.join)
+                } catch (e) {
+                  console.warn(e)
+                }
+              })
+            }
+          })
+        }
       case type.UPDATE:
       case type.DELETE:
         this.broadcastRoomsEmit(socket, rooms);
