@@ -37,21 +37,21 @@ export default class ServerHandler implements IHandler {
       case type.CREATE:
         if (this.message.join) {
           // Get all clients from input rooms
-          const sockets = this.socket.io.sockets
-          rooms.forEach(room => sockets.in(room))
+          const sockets = this.socket.io.sockets;
+          rooms.forEach((room) => sockets.in(room));
 
           // Every client now listen the new room
           sockets.clients((err: any, clients: string[]) => {
             if (!err) {
-              clients.forEach(client => {
+              clients.forEach((client) => {
                 try {
-                  this.socket.getConnectedSocketById(client).join(this.message.join)
+                  this.socket.getConnectedSocketById(client).join(this.message.join);
                 } catch (e) {
-                  console.warn(e)
+                  console.warn(e);
                 }
-              })
+              });
             }
-          })
+          });
         }
       case type.UPDATE:
       case type.DELETE:
