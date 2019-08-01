@@ -40,6 +40,9 @@ export default class ServerHandler implements IHandler {
           const sockets = this.socket.io.sockets;
           rooms.forEach((room) => sockets.in(room));
 
+          // Who created - listens to the room
+          socket.join(this.message.join)
+
           // Every client now listen the new room
           sockets.clients((err: any, clients: string[]) => {
             if (!err) {
