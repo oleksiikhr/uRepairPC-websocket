@@ -24,7 +24,14 @@ export default class ServerHandler implements IHandler {
    */
   public execute (): void {
     this.validate();
-    const socket = this.socket.getConnectedSocketById(this.message.socketId);
+    let socket: SocketIO.Socket;
+
+    try {
+      socket = this.socket.getConnectedSocketById(this.message.socketId);
+    } catch (e) {
+      return;
+    }
+
     const rooms = this.getRooms();
 
     switch (this.message.type) {
@@ -35,6 +42,27 @@ export default class ServerHandler implements IHandler {
         this.syncSocketRooms(socket, rooms);
         break;
       case type.CREATE:
+        if (this.message.join) {
+          // Get all clients from input rooms
+          const sockets = this.socket.io.sockets;
+          rooms.forEach((room) => sockets.in(room));
+
+          // Who created - listens to the room
+          socket.join(this.message.join);
+
+          // Every client now listen the new room
+          sockets.clients((err: any, clients: string[]) => {
+            if (!err) {
+              for (const client of clients) {
+                try {
+                  this.socket.getConnectedSocketById(client).join(this.message.join);
+                } catch {
+                  continue;
+                }
+              }
+            }
+          });
+        }
       case type.UPDATE:
       case type.DELETE:
         this.broadcastRoomsEmit(socket, rooms);
