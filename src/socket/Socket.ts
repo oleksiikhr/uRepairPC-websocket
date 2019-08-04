@@ -1,7 +1,6 @@
 import http from 'http';
 import https from 'https';
 import socketIO from 'socket.io';
-import SocketIO from './handlers/ServerHandler';
 
 export default class Socket {
   public io: socketIO.Server;
@@ -16,10 +15,10 @@ export default class Socket {
 
   /**
    * @param {string} socketId
-   * @return {SocketIO.Socket}
+   * @return {socketIO.Socket}
    * @throws
    */
-  public getConnectedSocketById (socketId: string): SocketIO.Socket {
+  public getConnectedSocketById (socketId: string): socketIO.Socket {
     const socket = this.io.sockets.connected[socketId];
 
     if (typeof socket === 'undefined') {
