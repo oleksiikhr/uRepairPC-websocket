@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/uRepairPC/websocket#readme",
   "dependencies": {
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.1.0",
     "ioredis": "^4.14.0",
     "pm2": "^3.5.1",
     "request": "^2.88.0",
