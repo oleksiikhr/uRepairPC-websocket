@@ -18,6 +18,10 @@
   <a href="https://github.com/uRepairPC/websocket" rel="nofollow"><img src="https://img.shields.io/github/license/urepairpc/websocket.svg" alt="License"></a>
 </p>
 
+## Repository moved
+
+https://github.com/uRepairPC/uRepairPC
+
 ## Introducing
 Created to receive updates in real time. Almost complete control is using Redis.
 
